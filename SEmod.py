@@ -3,9 +3,9 @@ import csv
 import argparse
 from rich import print as rprint
 parser = argparse.ArgumentParser(prog="SEmod",epilog="Made By @Tr4shL0rd")
-parser.add_argument("-n","--new-mod"   , help="add new mod to the list", dest="new_mod"  , action="store"     , type=str )
-parser.add_argument("-r", "--read-mods", help="read mods"              , dest="read_mods", action="store_true", type=bool) 
-parser.add_argument("-D", "--DEBUG"    , help="DEBUG MODE"             , dest="DEBUG"    , action="store_true", type=bool)
+parser.add_argument("-n","--new-mod"   , help="add new mod to the list", dest="new_mod"  , action="store"     , type=str)
+parser.add_argument("-r", "--read-mods", help="read mods"              , dest="read_mods", action="store_true"          ) 
+parser.add_argument("-D", "--DEBUG"    , help="DEBUG MODE"             , dest="DEBUG"    , action="store_true"          )
 args = parser.parse_args()
 def check_err(mod_list) -> bool:
     """
@@ -20,15 +20,16 @@ def check_err(mod_list) -> bool:
     elif "/?id=" not in mod_list[1] or not mod_list[1].split("/?=")[0].isdigit():
         print("TR4_ERR_003: Steam workshop id is not valid!")
         return False
-
     return True
+
 def link_fixer(mod):
     """
         checks if "https://" is at the start of the link
     """
     if not mod[1].startswith("https://"):
         mod[1] = f"https://{mod[1]}" 
-        return mod
+    return mod
+
 def new_mod(new_mod, mod_file="mods.csv"):        
     """
         add new mod to mod_file
@@ -40,7 +41,7 @@ def new_mod(new_mod, mod_file="mods.csv"):
                 ["Imber Corporation","https://steamcommunity.com/sharedfiles/filedetails/?id=973526550"],
                 ["Parallax Concepts","https://steamcommunity.com/sharedfiles/filedetails/?id=1135484957"],
             ]
-    
+    print(new_mod.strip().split(","))
     mod = link_fixer(new_mod.strip().split(","))
     if not check_err(mod):
         rprint(f"[red][underline]ERROR ADDING NEW MOD: [/red]{mod}[/underline]")
@@ -53,6 +54,7 @@ def new_mod(new_mod, mod_file="mods.csv"):
             writer = csv.writer(f)
             writer.writerow(header)
             writer.writerows(data)
+
 def read_mods(mod_file="mods.csv"):
     """
         reads all mods from mod_file
@@ -66,6 +68,7 @@ def read_mods(mod_file="mods.csv"):
             name.append(row[0])
             link.append(row[1])
             print(row[0].title())
+
 if __name__ == "__main__":
     if args.new_mod:
         new_mod(args.new_mod)
