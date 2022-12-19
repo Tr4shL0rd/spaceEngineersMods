@@ -2,14 +2,43 @@
 import csv
 import argparse
 from rich import print as rprint
+
 parser = argparse.ArgumentParser(prog="SEmod",epilog="Made By @Tr4shL0rd")
-parser.add_argument("-n","--new-mod"   , help="add new mod to the list", dest="new_mod"  , action="store"     , type=str)
-parser.add_argument("-r", "--read-mods", help="read mods"              , dest="read_mods", action="store_true"          ) 
-parser.add_argument("-D", "--DEBUG"    , help="DEBUG MODE"             , dest="DEBUG"    , action="store_true"          )
+parser.add_argument(
+                    "-n", "--new-mod",
+                    help="add new mod to the list",
+                    dest="new_mod",
+                    action="store",
+                    type=str
+                    )
+
+parser.add_argument(
+                    "-r", "--read-mods",
+                    help="read mods",
+                    dest="read_mods",
+                    action="store_true"
+                    )
+
+parser.add_argument(
+                    "-D", "--DEBUG",
+                    help="DEBUG MODE",
+                    dest="DEBUG",
+                    action="store_true"
+                    )
 args = parser.parse_args()
+
+def dprint(string):
+    """
+        debug print
+
+        - string str: debug string
+    """
+    print(f"DEBUG\n{string}")
 def check_err(mod_list) -> bool:
     """
         returns True if nothing is wrong
+
+        - mod_list list[str,str]:
     """
     if len(mod_list) < 2:
         print("TR4_ERR_001: did you forget to add a link or a name?")
@@ -25,14 +54,19 @@ def check_err(mod_list) -> bool:
 def link_fixer(mod):
     """
         checks if "https://" is at the start of the link
+
+        - mod  list[str,str]:
     """
     if not mod[1].startswith("https://"):
-        mod[1] = f"https://{mod[1]}" 
+        mod[1] = f"https://{mod[1]}"
     return mod
 
-def new_mod(new_mod, mod_file="mods.csv"):        
+def new_mod(new_mod, mod_file="mods.csv"):
     """
         add new mod to mod_file
+
+        - new_mod str: string containing mod name and link seperated by comma
+        - mod_file str: path to csv file
     """
     header = ["name", "url"]
     data = [
@@ -41,7 +75,6 @@ def new_mod(new_mod, mod_file="mods.csv"):
                 ["Imber Corporation","https://steamcommunity.com/sharedfiles/filedetails/?id=973526550"],
                 ["Parallax Concepts","https://steamcommunity.com/sharedfiles/filedetails/?id=1135484957"],
             ]
-    print(new_mod.strip().split(","))
     mod = link_fixer(new_mod.strip().split(","))
     if not check_err(mod):
         rprint(f"[red][underline]ERROR ADDING NEW MOD: [/red]{mod}[/underline]")
@@ -58,6 +91,8 @@ def new_mod(new_mod, mod_file="mods.csv"):
 def read_mods(mod_file="mods.csv"):
     """
         reads all mods from mod_file
+
+        - mod_file str: path to mod csv file
     """
     with open(mod_file, "r") as f:
         reader = csv.reader(f)
