@@ -1,10 +1,11 @@
+#!/usr/bin/env python3
 import csv
 import argparse
 from rich import print as rprint
 parser = argparse.ArgumentParser(prog="SEmod",epilog="Made By @Tr4shL0rd")
-parser.add_argument("-n","--new-mod", help="add new mod to the list",dest="new_mod", action="store", type=str)
-parser.add_argument("-r", "--read-mods", help="read mods",dest="read_mods", action="store_true") 
-parser.add_argument("-D", "--DEBUG", help="DEBUG MODE", dest="DEBUG", action="store_true")
+parser.add_argument("-n","--new-mod"   , help="add new mod to the list", dest="new_mod"  , action="store"     , type=str )
+parser.add_argument("-r", "--read-mods", help="read mods"              , dest="read_mods", action="store_true", type=bool) 
+parser.add_argument("-D", "--DEBUG"    , help="DEBUG MODE"             , dest="DEBUG"    , action="store_true", type=bool)
 args = parser.parse_args()
 def check_err(mod_list) -> bool:
     """
